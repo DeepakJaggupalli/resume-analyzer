@@ -2,6 +2,7 @@ import streamlit as st
 import json
 from resume_parser import parse_resume
 from llm_analyzer import analyze_resume_against_job
+from ml_features import calculate_tfidf_similarity, generate_competition_plot
 
 st.set_page_config(
     page_title="AI Resume Analyzer & Job Match Assistant",
@@ -50,13 +51,27 @@ if st.button("🔍 Analyze Resume", type="primary"):
                 
                 score = results.get("match_score", 0)
                 
+                # Calculate ML Score
+                tfidf_score = calculate_tfidf_similarity(resume_text, job_description)
+                
                 # Metrics Row
-                mcol1, mcol2 = st.columns([1, 3])
+                mcol1, mcol2, mcol3 = st.columns([1, 1, 2])
                 with mcol1:
-                    st.metric(label="Match Score", value=f"{score}%")
+                    st.metric(label="Gemini Semantic Score", value=f"{score}%", help="AI understanding of context and experience.")
                 with mcol2:
-                    st.progress(score / 100.0, text="Match Percentage")
+                    st.metric(label="TF-IDF Keyword Score", value=f"{tfidf_score}%", help="Traditional Machine Learning keyword match.")
+                with mcol3:
+                    st.progress(score / 100.0, text="Overall Match Percentage")
                     
+                st.markdown("---")
+                
+                # Data Science Competition Plot
+                st.subheader("📈 Competition Analysis (Simulated)")
+                st.markdown("This bell curve represents a simulated normal distribution of 1,000 past applicants. See where your score lands in the applicant pool.")
+                
+                fig = generate_competition_plot(score)
+                st.pyplot(fig)
+                
                 st.markdown("---")
                 
                 # Summary
