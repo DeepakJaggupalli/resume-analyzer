@@ -1,0 +1,77 @@
+/* Glassmorphism Dark Mode Styling for Streamlit */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap');
+
+html, body, [class*="css"] {
+    font-family: 'Outfit', sans-serif !important;
+}
+
+/* Base background */
+.stApp {
+    background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+    color: #e2e8f0;
+}
+
+/* Sidebar Styling */
+[data-testid="stSidebar"] {
+    background-color: rgba(15, 23, 42, 0.7) !important;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Glassmorphism Containers for Metrics & Expanders */
+div[data-testid="stMetric"], div[data-testid="stExpander"] {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 16px;
+    padding: 1rem;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+div[data-testid="stMetric"]:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px 0 rgba(139, 92, 246, 0.4);
+    border: 1px solid rgba(139, 92, 246, 0.5);
+}
+
+/* Headers and Titles */
+h1, h2, h3 {
+    background: -webkit-linear-gradient(45deg, #a78bfa, #3b82f6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 800 !important;
+}
+
+/* Streamlit Buttons */
+button[kind="primary"] {
+    background: linear-gradient(45deg, #8b5cf6, #3b82f6) !important;
+    border: none !important;
+    border-radius: 30px !important;
+    color: white !important;
+    font-weight: 600 !important;
+    padding: 0.5rem 2rem !important;
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4) !important;
+    transition: all 0.3s ease !important;
+}
+
+button[kind="primary"]:hover {
+    transform: scale(1.05) !important;
+    box-shadow: 0 6px 20px rgba(139, 92, 246, 0.6) !important;
+}
+
+/* File Uploader and Text Area */
+.stFileUploader, .stTextArea {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+    padding: 10px;
+    border: 1px dashed rgba(255, 255, 255, 0.2);
+}
+
+/* Progress bar styling */
+.stProgress > div > div > div > div {
+    background-image: linear-gradient(to right, #8b5cf6, #3b82f6);
+    border-radius: 10px;
+}
