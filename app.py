@@ -8,7 +8,7 @@ from ml_features import calculate_tfidf_similarity, generate_competition_plot
 st.set_page_config(
     page_title="AI Resume Analyzer",
     page_icon="📄",
-    layout="wide"
+    layout="centered"
 )
 
 st.title("📄 AI Resume Analyzer")
