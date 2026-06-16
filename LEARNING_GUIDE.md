@@ -1,5 +1,5 @@
-# The Ultimate Technical Masterclass: AI Resume Analyzer & ATS Simulator
-*A comprehensive, end-to-end documentation covering Introduction, Terminology, System Architecture, Codebase Breakdown, and Expected Results.*
+# The Ultimate Technical Masterclass: AI Resume Analyzer
+*A comprehensive, end-to-end documentation covering Introduction, Terminology, System Architecture, Mathematics, Codebase Breakdown, and Expected Results.*
 
 ---
 
@@ -7,10 +7,12 @@
 1. [Project Introduction & Problem Statement](#1-project-introduction--problem-statement)
 2. [Glossary of Technical Terms (Learn These!)](#2-glossary-of-technical-terms)
 3. [The File Architecture: What is in each file?](#3-the-file-architecture)
-4. [The Results: What exactly does this app output?](#4-the-results-what-exactly-does-this-app-output)
-5. [The Mathematics: TF-IDF & Cosine Similarity](#5-the-mathematics)
-6. [LLM Architecture & Prompt Engineering](#6-llm-architecture)
-7. [Deployment & Security](#7-deployment--security)
+4. [Step-by-Step: The Execution Lifecycle](#4-step-by-step-the-execution-lifecycle)
+5. [The Results: What exactly does this app output?](#5-the-results-what-exactly-does-this-app-output)
+6. [The Mathematics: TF-IDF & Statistical Modeling](#6-the-mathematics-tf-idf--statistical-modeling)
+7. [LLM Architecture & Prompt Engineering](#7-llm-architecture--prompt-engineering)
+8. [API Integration & JSON Data Marshalling](#8-api-integration--json-data-marshalling)
+9. [Deployment & Security](#9-deployment--security)
 
 ---
 
@@ -78,7 +80,27 @@ It then processes these documents using both traditional **Machine Learning Math
 
 ---
 
-## 4. The Results: What exactly does this app output?
+## 4. Step-by-Step: The Execution Lifecycle
+*If you click "Analyze" on the website, here is exactly what happens behind the scenes in order:*
+
+**Step 1: The Front Door (`app.py`)**
+The user goes to the website and uploads a file. The Streamlit code (`st.file_uploader`) catches the file and holds it in temporary computer memory.
+
+**Step 2: Ripping out the text (`resume_parser.py`)**
+The app hands the file to our "Eyes". If it's a PDF, `PyPDF` looks at the document, highlights all the invisible text, copies it, and saves it as a massive string of plain text inside our code.
+
+**Step 3: Calculating the Math Score (`ml_features.py`)**
+The plain text is sent to `Scikit-Learn`. The computer turns all the words into numbers (a matrix) and compares the resume numbers to the job description numbers. It spits out a score like `42.5%`.
+
+**Step 4: Asking the Supercomputer (`llm_analyzer.py`)**
+Next, we take the plain text and send it over the internet to Google's servers using your **API Key** (which is basically a VIP password that lets us use Google's servers). We use a technique called **Prompt Engineering**. We literally send Google a message that says: *"Act like a recruiter. Read this resume. Find the missing skills. Give me the answer back in JSON format."*
+
+**Step 5: Catching the Answer & Drawing the Dashboard (`app.py`)**
+Google sends the answer back as **JSON** (a very organized list of data). Our code catches this list, reads it, and uses Streamlit commands like `st.metric` and `st.expander` to draw beautiful boxes, progress bars, and charts on the screen so the user can easily read the results!
+
+---
+
+## 5. The Results: What exactly does this app output?
 When the AI finishes processing, it doesn't just give a random paragraph. It is programmed to output highly structured metrics. Here is what the user gets:
 
 1. **Gemini Semantic Score:** A smart score (0-100%) based on the *meaning* of your experience, not just matching words. (e.g., Knowing that "Managed a team" equals "Leadership").
@@ -93,21 +115,58 @@ When the AI finishes processing, it doesn't just give a random paragraph. It is 
 
 ---
 
-## 5. The Mathematics: Deep Dive
+## 6. The Mathematics: TF-IDF & Statistical Modeling
 *(Explain this if the interviewer asks about Data Science!)*
+
+### TF-IDF & Cosine Similarity
 If a Job Description says "Python" 5 times, and a resume says "Python" 1 time, how do we mathematically compare them? We use `TfidfVectorizer` from `scikit-learn`. The Vectorizer creates a massive mathematical matrix where every unique word is an axis. We then calculate the angle between the Resume vector and the Job Description vector using **Cosine Similarity**. If the angle is 0 degrees, the documents are identical (Cosine = 1.0 or 100%).
 
+### Statistical Normal Distribution Curves
+We use `matplotlib` and `numpy` to generate a Bell Curve. 
+1. `np.random.normal(loc=60, scale=15, size=1000)`: We simulate 1,000 fake applicant scores. The average (mean) is 60%, with a standard deviation of 15.
+2. We use Matplotlib to plot these 1,000 scores as a histogram, and draw a Probability Density Function (PDF) curve over it.
+3. Finally, we plot a vertical red line representing the User's exact Match Score. This demonstrates your ability to visualize complex statistical datasets.
+
 ---
 
-## 6. LLM Architecture & Prompt Engineering
+## 7. LLM Architecture & Prompt Engineering
 *(Explain this if the interviewer asks about AI Engineering!)*
 We use `gemini-flash-latest`. We do not just send the resume to Google and say "Is this good?". We use advanced Prompt Engineering:
-1. **Persona Assignment:** `"You are an expert ATS (Applicant Tracking System) and senior technical recruiter."`
-2. **Output Restricting (JSON):** We explicitly instruct the AI: `"You must return ONLY a valid JSON object..."` to prevent it from rambling in conversational English.
-3. **Temperature Control:** We explicitly set `temperature: 0.0` to kill the AI's "creativity" and force it to be a strict, mathematical grading machine.
+1. **Persona Assignment:** `"You are an expert ATS (Applicant Tracking System) and senior technical recruiter."` This forces the neural network to activate its weights associated with HR and recruiting.
+2. **Context Injection:** We inject the `{resume_text}` and `{job_description}` directly into the prompt string.
+3. **Output Restricting (JSON):** We explicitly instruct the AI: `"You must return ONLY a valid JSON object..."` to prevent it from rambling in conversational English.
+4. **Temperature Control:** We explicitly set `temperature: 0.0` to kill the AI's "creativity" and force it to be a strict, mathematical grading machine (Deterministic).
 
 ---
 
-## 7. Deployment & Security
+## 8. API Integration & JSON Data Marshalling
+When the Google servers return the data, it arrives as a massive string. 
+
+**What is JSON?**
+JSON (JavaScript Object Notation) is the universal standard for passing data between software systems. It uses Key-Value pairs.
+```json
+{
+  "match_score": 85,
+  "missing_skills": ["Docker", "AWS"]
+}
+```
+
+**The Parsing Pipeline:**
+1. `response.text` gives us the raw string from Google.
+2. We use `json.loads()` to convert that string into a Python Dictionary.
+3. If Google accidentally wrapped the JSON in markdown code blocks (````json ````), our code includes robust string-stripping logic to clean the markdown off before parsing, preventing fatal application crashes.
+
+---
+
+## 9. Deployment & Security
 The project is hosted on **GitHub** and deployed via **Streamlit Community Cloud**. 
-API Keys (like your `AIzaSy...` key) are highly sensitive. We avoided hardcoding the key into the code. Instead, we use `st.secrets["GEMINI_API_KEY"]`. Streamlit reads it from a secure environment variables tab, which is Enterprise-grade security architecture!
+
+**Secrets Management:**
+API Keys (like your `AIzaSy...` key) are highly sensitive. If pushed to public GitHub, hackers will steal them. We avoided hardcoding the key into the code. Instead, we use `st.secrets["GEMINI_API_KEY"]`. Streamlit reads it from a secure environment variables tab, which is Enterprise-grade security architecture!
+
+**Continuous Deployment (CI/CD):**
+Because the Streamlit Cloud server is linked directly to your GitHub repository's `main` branch, it utilizes Continuous Deployment. The moment you push new code to GitHub, Streamlit automatically pulls the new code and re-compiles the live website within 60 seconds without any manual server maintenance required.
+
+---
+**End of Masterclass Documentation.** 
+*You are now equipped to explain the entire system architecture, the underlying mathematics, the LLM prompt engineering, and the full-stack data flow to any Senior Engineer or Technical Recruiter.*
