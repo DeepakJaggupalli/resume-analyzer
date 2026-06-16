@@ -23,7 +23,14 @@ def analyze_resume_against_job(resume_text: str, job_description: str) -> dict:
     
     # We use 'gemini-flash-latest' to ensure we always hit the currently active free tier model,
     # completely bypassing version deprecation issues (like 1.5 being deprecated).
-    model = genai.GenerativeModel('gemini-flash-latest', generation_config={"response_mime_type": "application/json"})
+    # We set temperature to 0.0 to make the AI deterministic (consistent scores every time).
+    model = genai.GenerativeModel(
+        'gemini-flash-latest', 
+        generation_config={
+            "response_mime_type": "application/json",
+            "temperature": 0.0
+        }
+    )
     
     prompt = f"""
     You are an expert ATS (Applicant Tracking System) and senior technical recruiter. 
