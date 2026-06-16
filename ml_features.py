@@ -20,7 +20,7 @@ def calculate_tfidf_similarity(resume_text: str, job_description: str) -> float:
 
 def generate_competition_plot(match_score: float):
     """
-    Generates a Plotly interactive bell curve.
+    Generates a clean Plotly interactive bell curve for the Corporate theme.
     """
     np.random.seed(42)
     simulated_scores = np.random.normal(loc=60, scale=15, size=1000)
@@ -28,32 +28,28 @@ def generate_competition_plot(match_score: float):
     
     df = pd.DataFrame(simulated_scores, columns=['Score'])
     
-    # Create the histogram
     fig = px.histogram(df, x="Score", nbins=30, histnorm='probability density', 
-                       opacity=0.6, color_discrete_sequence=['#3b82f6'])
+                       opacity=0.3, color_discrete_sequence=['#2563eb']) # Trust blue
     
-    # Add the normal distribution line
     x = np.linspace(0, 100, 100)
     p = (1 / (15 * np.sqrt(2 * np.pi))) * np.exp(-0.5 * ((x - 60) / 15) ** 2)
-    fig.add_trace(go.Scatter(x=x, y=p, mode='lines', line=dict(color='white', width=2), name='Normal Dist'))
+    fig.add_trace(go.Scatter(x=x, y=p, mode='lines', line=dict(color='#1e40af', width=2), name='Normal Dist'))
     
-    # Add vertical line for user score
-    fig.add_vline(x=match_score, line_width=3, line_dash="dash", line_color="#ef4444", 
+    fig.add_vline(x=match_score, line_width=2, line_dash="dash", line_color="#dc2626", 
                   annotation_text=f"Your Score: {match_score}", annotation_position="top right",
-                  annotation_font_color="white")
+                  annotation_font_color="#b91c1c")
     
     fig.update_layout(
         title="Applicant Score Distribution",
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
-        font=dict(color="white", family="Outfit"),
+        font=dict(color="#111827", family="Inter"),
         xaxis_title="Match Score",
         yaxis_title="Density",
         showlegend=False
     )
     
-    # Make grid transparent
-    fig.update_xaxes(showgrid=True, gridwidth=1, gridcolor='rgba(255,255,255,0.1)')
-    fig.update_yaxes(showgrid=True, gridwidth=1, gridcolor='rgba(255,255,255,0.1)')
+    fig.update_xaxes(showgrid=True, gridwidth=1, gridcolor='#e5e7eb', zerolinecolor='#d1d5db')
+    fig.update_yaxes(showgrid=True, gridwidth=1, gridcolor='#e5e7eb', zerolinecolor='#d1d5db')
     
     return fig

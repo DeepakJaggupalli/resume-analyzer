@@ -2,25 +2,24 @@ import plotly.graph_objects as go
 import plotly.express as px
 
 def create_gauge_chart(score):
-    """Creates a beautiful interactive speedometer gauge for the Match Score."""
+    """Creates a clean, professional speedometer gauge for the Match Score."""
     fig = go.Figure(go.Indicator(
         mode="gauge+number",
         value=score,
         domain={'x': [0, 1], 'y': [0, 1]},
-        title={'text': "Match Score", 'font': {'size': 24, 'color': 'white'}},
+        title={'text': "Match Score", 'font': {'size': 20, 'color': '#111827'}},
         gauge={
-            'axis': {'range': [None, 100], 'tickwidth': 1, 'tickcolor': "white"},
+            'axis': {'range': [None, 100], 'tickwidth': 1, 'tickcolor': "#d1d5db"},
             'bar': {'color': "rgba(0,0,0,0)"},
-            'bgcolor': "rgba(255,255,255,0.1)",
-            'borderwidth': 2,
-            'bordercolor': "rgba(255,255,255,0.2)",
+            'bgcolor': "#f3f4f6",
+            'borderwidth': 0,
             'steps': [
-                {'range': [0, 40], 'color': 'rgba(239, 68, 68, 0.6)'},  # Red
-                {'range': [40, 75], 'color': 'rgba(245, 158, 11, 0.6)'}, # Yellow
-                {'range': [75, 100], 'color': 'rgba(16, 185, 129, 0.6)'} # Green
+                {'range': [0, 40], 'color': '#fca5a5'},  # Light Red
+                {'range': [40, 75], 'color': '#fcd34d'}, # Light Yellow
+                {'range': [75, 100], 'color': '#6ee7b7'} # Light Green
             ],
             'threshold': {
-                'line': {'color': "white", 'width': 4},
+                'line': {'color': "#1f2937", 'width': 4},
                 'thickness': 0.75,
                 'value': score
             }
@@ -29,15 +28,13 @@ def create_gauge_chart(score):
     fig.update_layout(
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
-        font={'color': "white", 'family': "Outfit"},
-        margin=dict(l=20, r=20, t=50, b=20)
+        font={'color': "#111827", 'family': "Inter"},
+        margin=dict(l=20, r=20, t=40, b=20)
     )
     return fig
 
 def create_radar_chart(extracted_skills, missing_skills):
-    """Creates a Radar Chart comparing present vs missing skills."""
-    # We combine them to form the axis. 
-    # To make it look good, we cap it at 10 skills total (top 5 from each).
+    """Creates a clean Radar Chart comparing present vs missing skills."""
     present = extracted_skills[:5]
     missing = missing_skills[:5]
     
@@ -45,7 +42,6 @@ def create_radar_chart(extracted_skills, missing_skills):
     if not categories:
         return None
         
-    # Present skills get a score of 5, missing get a score of 1.
     values = [5] * len(present) + [1] * len(missing)
     
     fig = go.Figure()
@@ -54,8 +50,8 @@ def create_radar_chart(extracted_skills, missing_skills):
         r=values,
         theta=categories,
         fill='toself',
-        fillcolor='rgba(139, 92, 246, 0.5)',
-        line=dict(color='#8b5cf6'),
+        fillcolor='rgba(37, 99, 235, 0.2)', # Trust Blue transparent
+        line=dict(color='#2563eb'),
         name='Skill Proficiency'
     ))
     
@@ -64,17 +60,17 @@ def create_radar_chart(extracted_skills, missing_skills):
             radialaxis=dict(
                 visible=True,
                 range=[0, 5],
-                tickfont=dict(color='rgba(255,255,255,0.5)')
+                tickfont=dict(color='#9ca3af')
             ),
             angularaxis=dict(
-                tickfont=dict(color='white', size=12)
+                tickfont=dict(color='#374151', size=11)
             ),
-            bgcolor='rgba(0,0,0,0)'
+            bgcolor='#ffffff'
         ),
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
-        font=dict(family="Outfit", color="white"),
-        margin=dict(l=40, r=40, t=40, b=40),
+        font=dict(family="Inter", color="#111827"),
+        margin=dict(l=40, r=40, t=30, b=30),
         showlegend=False
     )
     return fig

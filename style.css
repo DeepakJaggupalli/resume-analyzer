@@ -1,77 +1,87 @@
-/* Glassmorphism Dark Mode Styling for Streamlit */
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap');
+/* Professional Corporate SaaS Styling for Streamlit */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 html, body, [class*="css"] {
-    font-family: 'Outfit', sans-serif !important;
+    font-family: 'Inter', sans-serif !important;
+    background-color: #f9fafb !important;
+    color: #111827 !important;
 }
 
 /* Base background */
 .stApp {
-    background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
-    color: #e2e8f0;
+    background-color: #f9fafb;
 }
 
 /* Sidebar Styling */
 [data-testid="stSidebar"] {
-    background-color: rgba(15, 23, 42, 0.7) !important;
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: #ffffff !important;
+    border-right: 1px solid #e5e7eb;
 }
 
-/* Glassmorphism Containers for Metrics & Expanders */
+/* Minimalist Cards for Metrics & Expanders */
 div[data-testid="stMetric"], div[data-testid="stExpander"] {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-radius: 16px;
+    background-color: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
     padding: 1rem;
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+    transition: box-shadow 0.2s ease;
 }
 
 div[data-testid="stMetric"]:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 12px 40px 0 rgba(139, 92, 246, 0.4);
-    border: 1px solid rgba(139, 92, 246, 0.5);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
 /* Headers and Titles */
 h1, h2, h3 {
-    background: -webkit-linear-gradient(45deg, #a78bfa, #3b82f6);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    font-weight: 800 !important;
+    color: #111827 !important;
+    font-weight: 700 !important;
+}
+
+h4, h5, h6 {
+    color: #374151 !important;
+    font-weight: 600 !important;
 }
 
 /* Streamlit Buttons */
 button[kind="primary"] {
-    background: linear-gradient(45deg, #8b5cf6, #3b82f6) !important;
+    background-color: #2563eb !important;
     border: none !important;
-    border-radius: 30px !important;
+    border-radius: 6px !important;
     color: white !important;
-    font-weight: 600 !important;
-    padding: 0.5rem 2rem !important;
-    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4) !important;
-    transition: all 0.3s ease !important;
+    font-weight: 500 !important;
+    padding: 0.5rem 1.5rem !important;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
 }
 
 button[kind="primary"]:hover {
-    transform: scale(1.05) !important;
-    box-shadow: 0 6px 20px rgba(139, 92, 246, 0.6) !important;
+    background-color: #1d4ed8 !important;
+}
+
+button[kind="secondary"] {
+    background-color: #ffffff !important;
+    border: 1px solid #d1d5db !important;
+    color: #374151 !important;
+    border-radius: 6px !important;
+    font-weight: 500 !important;
 }
 
 /* File Uploader and Text Area */
 .stFileUploader, .stTextArea {
-    background: rgba(255, 255, 255, 0.03);
-    border-radius: 12px;
+    background-color: #ffffff;
+    border-radius: 8px;
     padding: 10px;
-    border: 1px dashed rgba(255, 255, 255, 0.2);
+    border: 1px solid #e5e7eb;
 }
 
 /* Progress bar styling */
 .stProgress > div > div > div > div {
-    background-image: linear-gradient(to right, #8b5cf6, #3b82f6);
-    border-radius: 10px;
+    background-color: #2563eb;
+    border-radius: 4px;
+}
+
+/* Clean Alert Messages */
+.stAlert {
+    border-radius: 6px !important;
+    border: 1px solid rgba(0,0,0,0.05) !important;
 }
