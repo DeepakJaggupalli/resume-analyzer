@@ -31,51 +31,50 @@ if st.button("🔍 Analyze Resume", type="primary"):
     elif not job_description.strip():
         st.error("Please paste a job description to proceed.")
     else:
-        # TRANSPARENT BACKEND LOGS
-        st.markdown("### ⚙️ Backend Process Logs (Developer Mode)")
-        
-        try:
-            resume_text = parse_resume(uploaded_file, uploaded_file.name)
-            st.success("📄 Step 1: Document Text Successfully Extracted!")
-            st.markdown("**Raw Extracted Text (Preview):**")
-            # Show a snippet of the extracted text
-            preview_text = resume_text[:800] + "\n\n... [TEXT TRUNCATED FOR DISPLAY]" if len(resume_text) > 800 else resume_text
-            st.code(preview_text, language="text")
-        except Exception as e:
-            st.error(f"Error reading file: {e}")
-            st.stop()
-            
-        if not resume_text.strip():
-            st.error("The uploaded resume appears to be empty or unreadable.")
-            st.stop()
+        # TRANSPARENT BACKEND LOGS (Hidden in Expander)
+        with st.expander("⚙️ View Backend Processing Logs (Developer Mode)"):
+            try:
+                resume_text = parse_resume(uploaded_file, uploaded_file.name)
+                st.success("📄 Step 1: Document Text Successfully Extracted!")
+                st.markdown("**Raw Extracted Text (Preview):**")
+                # Show a snippet of the extracted text
+                preview_text = resume_text[:800] + "\n\n... [TEXT TRUNCATED FOR DISPLAY]" if len(resume_text) > 800 else resume_text
+                st.code(preview_text, language="text")
+            except Exception as e:
+                st.error(f"Error reading file: {e}")
+                st.stop()
+                
+            if not resume_text.strip():
+                st.error("The uploaded resume appears to be empty or unreadable.")
+                st.stop()
 
-        tfidf_score = calculate_tfidf_similarity(resume_text, job_description)
-        st.success("🧮 Step 2: TF-IDF Machine Learning Keyword Similarity Calculated!")
-        st.markdown("**Raw Math Output:**")
-        st.code(f"Cosine Similarity Matrix Score: {tfidf_score}", language="python")
+            tfidf_score = calculate_tfidf_similarity(resume_text, job_description)
+            st.success("🧮 Step 2: TF-IDF Machine Learning Keyword Similarity Calculated!")
+            st.markdown("**Raw Math Output:**")
+            st.code(f"Cosine Similarity Matrix Score: {tfidf_score}", language="python")
 
-        st.info("🤖 Step 3: Querying Gemini AI... (Waiting for server response)")
-        try:
-            backend_data = analyze_resume_against_job(resume_text, job_description)
-            
-            # The backend_data contains parsed_json, raw_prompt, and raw_response
-            results = backend_data["parsed_json"]
-            raw_prompt = backend_data["raw_prompt"]
-            raw_response = backend_data["raw_response"]
-            
-            st.success("🤖 API Connection Successful! Data Retrieved.")
-            
-            with st.expander("🔍 View Raw Prompt Sent to Google Gemini API"):
+            st.info("🤖 Step 3: Querying Gemini AI... (Waiting for server response)")
+            try:
+                backend_data = analyze_resume_against_job(resume_text, job_description)
+                
+                # The backend_data contains parsed_json, raw_prompt, and raw_response
+                results = backend_data["parsed_json"]
+                raw_prompt = backend_data["raw_prompt"]
+                raw_response = backend_data["raw_response"]
+                
+                st.success("🤖 API Connection Successful! Data Retrieved.")
+                
+                st.markdown("**View Raw Prompt Sent to Google Gemini API:**")
                 st.code(raw_prompt, language="markdown")
-                
-            with st.expander("📦 View Raw JSON Response from Google Gemini API"):
+                    
+                st.markdown("**View Raw JSON Response from Google Gemini API:**")
                 st.code(raw_response, language="json")
+                    
+            except Exception as e:
+                st.error(f"An error occurred during AI analysis: {e}")
+                st.stop()
                 
-        except Exception as e:
-            st.error(f"An error occurred during AI analysis: {e}")
-            st.stop()
-            
-        st.success("📊 Step 4: Formatting JSON into UI Dashboard!")
+            st.success("📊 Step 4: Formatting JSON into UI Dashboard!")
             
         st.markdown("---")
         # -------------------------------------------------------------
