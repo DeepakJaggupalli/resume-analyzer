@@ -64,7 +64,14 @@ def analyze_resume_against_job(resume_text: str, job_description: str) -> dict:
             raw_text = raw_text[:-3]
             
         result_json = json.loads(raw_text.strip())
-        return result_json
+        
+        # Return the transparent backend data
+        return {
+            "parsed_json": result_json,
+            "raw_prompt": prompt,
+            "raw_response": response.text
+        }
+        
     except json.JSONDecodeError as e:
         raise ValueError(f"The LLM returned an invalid JSON format. Details: {e}")
     except Exception as e:
