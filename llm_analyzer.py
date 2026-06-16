@@ -21,8 +21,8 @@ def analyze_resume_against_job(resume_text: str, job_description: str) -> dict:
     """
     configure_llm()
     
-    # We use gemini-1.5-flash as it is highly reliable and fast for JSON extraction.
-    model = genai.GenerativeModel('gemini-1.5-flash', generation_config={"response_mime_type": "application/json"})
+    # We use 'gemini-pro' (Gemini 1.0) because it is universally supported across all regions and API keys.
+    model = genai.GenerativeModel('gemini-pro')
     
     prompt = f"""
     You are an expert ATS (Applicant Tracking System) and senior technical recruiter. 
@@ -53,10 +53,18 @@ def analyze_resume_against_job(resume_text: str, job_description: str) -> dict:
     
     try:
         response = model.generate_content(prompt)
-        # Parse the JSON string returned by the model
-        result_json = json.loads(response.text)
+        raw_text = response.text.strip()
+        # Clean markdown formatting if present
+        if raw_text.startswith("```json"):
+            raw_text = raw_text[7:]
+        elif raw_text.startswith("```"):
+            raw_text = raw_text[3:]
+        if raw_text.endswith("```"):
+            raw_text = raw_text[:-3]
+            
+        result_json = json.loads(raw_text.strip())
         return result_json
-    except json.JSONDecodeError:
-        raise ValueError("The LLM returned an invalid JSON format. Please try again.")
+    except json.JSONDecodeError as e:
+        raise ValueError(f"The LLM returned an invalid JSON format. Details: {e}")
     except Exception as e:
         raise ValueError(f"LLM API call failed: {e}")
