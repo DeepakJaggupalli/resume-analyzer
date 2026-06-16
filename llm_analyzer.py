@@ -21,8 +21,8 @@ def analyze_resume_against_job(resume_text: str, job_description: str) -> dict:
     """
     configure_llm()
     
-    # We use 'gemini-pro' (Gemini 1.0) because it is universally supported across all regions and API keys.
-    model = genai.GenerativeModel('gemini-pro')
+    # We use 'gemini-1.5-flash' as it is the official, fast, and completely free modern model.
+    model = genai.GenerativeModel('gemini-1.5-flash', generation_config={"response_mime_type": "application/json"})
     
     prompt = f"""
     You are an expert ATS (Applicant Tracking System) and senior technical recruiter. 
