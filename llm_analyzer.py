@@ -42,18 +42,18 @@ def analyze_resume_against_job(resume_text: str, job_description: str) -> dict:
     Resume Text:
     {resume_text}
     
-    You must return ONLY a valid JSON object with the following schema:
+    You must return ONLY a valid JSON object with the following schema. Make sure match_score is an integer between 0 and 100 representing the fit:
     {{
         "resume_summary": "A 2-3 sentence summary of the candidate's profile.",
-        "extracted_skills": ["Skill 1", "Skill 2", ...],
-        "match_score": 85, // An integer between 0 and 100 representing the fit
-        "missing_skills": ["Missing Skill 1", "Missing Skill 2", ...],
-        "strengths": ["Strength 1", "Strength 2", ...],
-        "weaknesses": ["Weakness 1", "Weakness 2", ...],
-        "ats_suggestions": ["Suggestion 1", "Suggestion 2", ...],
+        "extracted_skills": ["Skill 1", "Skill 2"],
+        "match_score": 85,
+        "missing_skills": ["Missing Skill 1", "Missing Skill 2"],
+        "strengths": ["Strength 1", "Strength 2"],
+        "weaknesses": ["Weakness 1", "Weakness 2"],
+        "ats_suggestions": ["Suggestion 1", "Suggestion 2"],
         "improved_bullet_points": [
             "Improved bullet point 1 (quantified and action-oriented)",
-            "Improved bullet point 2", ...
+            "Improved bullet point 2"
         ],
         "readiness_feedback": "A final paragraph giving an overall assessment of hiring readiness."
     }}
