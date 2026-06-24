@@ -80,6 +80,6 @@ def analyze_resume_against_job(resume_text: str, job_description: str) -> dict:
         }
         
     except json.JSONDecodeError as e:
-        raise ValueError(f"The LLM returned an invalid JSON format. Details: {e}")
+        raise ValueError(f"The LLM returned an invalid JSON format. Details: {e}\n\nRAW OUTPUT:\n{raw_text}")
     except Exception as e:
         raise ValueError(f"LLM API call failed: {e}")
