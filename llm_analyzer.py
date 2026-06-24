@@ -21,14 +21,13 @@ def analyze_resume_against_job(resume_text: str, job_description: str) -> dict:
     """
     configure_llm()
     
-    # We use 'gemini-flash-latest' to ensure we always hit the currently active free tier model,
-    # completely bypassing version deprecation issues (like 1.5 being deprecated).
-    # We set temperature to 0.0 to make the AI deterministic (consistent scores every time).
+    # We use 'gemini-flash-latest' to ensure we always hit the currently active free tier model.
+    # We set temperature to 0.1 to prevent the model from getting stuck in repetitive text loops.
     model = genai.GenerativeModel(
         'gemini-flash-latest', 
         generation_config={
             "response_mime_type": "application/json",
-            "temperature": 0.0
+            "temperature": 0.1
         }
     )
     
@@ -46,7 +45,6 @@ def analyze_resume_against_job(resume_text: str, job_description: str) -> dict:
     {{
         "resume_summary": "A 2-3 sentence summary of the candidate's profile.",
         "extracted_skills": ["Skill 1", "Skill 2"],
-        "match_score": 85,
         "missing_skills": ["Missing Skill 1", "Missing Skill 2"],
         "strengths": ["Strength 1", "Strength 2"],
         "weaknesses": ["Weakness 1", "Weakness 2"],
@@ -55,7 +53,8 @@ def analyze_resume_against_job(resume_text: str, job_description: str) -> dict:
             "Improved bullet point 1 (quantified and action-oriented)",
             "Improved bullet point 2"
         ],
-        "readiness_feedback": "A final paragraph giving an overall assessment of hiring readiness."
+        "readiness_feedback": "A final paragraph giving an overall assessment of hiring readiness.",
+        "match_score": 85
     }}
     """
     
