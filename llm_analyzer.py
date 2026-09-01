@@ -24,7 +24,7 @@ def analyze_resume_against_job(resume_text: str, job_description: str) -> dict:
     # We use 'gemini-flash-latest' to ensure we always hit the currently active free tier model.
     # We set temperature to 0.1 to prevent the model from getting stuck in repetitive text loops.
     model = genai.GenerativeModel(
-        'gemini-flash-latest', 
+        'gemini-2.0-flash', 
         generation_config={
             "response_mime_type": "application/json",
             "temperature": 0.1
