@@ -96,6 +96,14 @@ if st.button("🚀 Launch Agentic Analysis", type="primary", use_container_width
     evaluated = results.get("evaluation", {})
     coaching = results.get("coaching", {})
 
+    with st.expander("⚙️ View Backend Processing Logs (Developer Mode)"):
+        st.markdown("**Extractor Agent JSON Output:**")
+        st.json(extracted)
+        st.markdown("**Evaluator Agent JSON Output:**")
+        st.json(evaluated)
+        st.markdown("**Coach Agent JSON Output:**")
+        st.json(coaching)
+
     # Create Tabs
     tab1, tab2, tab3 = st.tabs(["📊 Dashboard", "🧠 Agent Analysis", "🎓 Career Coach"])
     
